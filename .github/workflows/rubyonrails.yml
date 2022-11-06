@@ -35,11 +35,24 @@ jobs:
           bundler-cache: true
       # Add or replace database setup steps here
       - name: Set up database schema
-        run: bin/rails db:migrate
+        run: bin/rails db:test:prepare
       # Add or replace test runners here
       - name: Run tests
-        run: bin/rails test:all
+        run: bin/rails test
 
+      - name: Generate deployment package
+        run: |
+          zip -r deploy.zip . -x '*.git*'
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v11
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: rails-poc
+          environment_name: Railspoc-env
+          version_label: 3
+          region: ap-southeast-1
+          deployment_package: deploy.zip
   # lint:
   #   runs-on: ubuntu-latest
   #   steps:
