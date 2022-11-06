@@ -38,7 +38,7 @@ jobs:
         run: bin/rails db:migrate
       # Add or replace test runners here
       - name: Run tests
-        run: bin/rake
+        run: bin/rails test:all
 
   # lint:
   #   runs-on: ubuntu-latest
