@@ -40,23 +40,30 @@ jobs:
       - name: Run tests
         run: bin/rails test
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +%s)"
-
-      - name: Generate deployment package
-        run: |
-          zip -r deploy.zip . -x '*.git*'
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v11
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: rails-poc
-          environment_name: Railspoc-env
-          version_label: "deploy-${{ steps.date.outputs.date }}"
-          region: ap-southeast-1
-          deployment_package: deploy.zip
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "poc-dev" #Must be unique in Heroku
+          heroku_email: ${{ secrets.EMAIL }}
+
+      # - name: Get current date
+      #   id: date
+      #   run: echo "::set-output name=date::$(date +%s)"
+
+      # - name: Generate deployment package
+      #   run: |
+      #     zip -r deploy.zip . -x '*.git*'
+      # - name: Deploy to EB
+      #   uses: einaregilsson/beanstalk-deploy@v11
+      #   with:
+      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     application_name: rails-poc
+      #     environment_name: Railspoc-env
+      #     version_label: "deploy-${{ steps.date.outputs.date }}"
+      #     region: ap-southeast-1
+      #     deployment_package: deploy.zip
   # lint:
   #   runs-on: ubuntu-latest
   #   steps:
