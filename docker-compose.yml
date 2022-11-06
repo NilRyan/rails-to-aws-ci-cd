@@ -1,0 +1,16 @@
+version: "3.2"
+
+services:
+  postgres:
+    container_name: your-basic-crud-app
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=basic
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+    - "5432:5432"
+    volumes:
+    - pg:/data/asset
+volumes:
+  pg:
