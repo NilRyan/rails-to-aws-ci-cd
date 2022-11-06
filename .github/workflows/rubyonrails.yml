@@ -41,7 +41,11 @@ jobs:
         run: bin/rails test
 
       - name: Get current date time
+        id: date
         run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+      - name: Echo current date
+        run: echo $NOW
+
 
       - name: Generate deployment package
         run: |
@@ -53,7 +57,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: rails-poc
           environment_name: Railspoc-env
-          version_label: $NOW
+          version_label: "deploy-${{ steps.date.outputs.date }}"
           region: ap-southeast-1
           deployment_package: deploy.zip
   # lint:
