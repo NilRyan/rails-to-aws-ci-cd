@@ -50,7 +50,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: rails-poc
           environment_name: Railspoc-env
-          version_label: "deploy-${{ steps.current-time.outputs.time }}"
+          version_label: "${{ steps.current-time.outputs.time }}"
           region: ap-southeast-1
           deployment_package: deploy.zip
   # lint:
